@@ -3,6 +3,7 @@ import random
 import time
 
 MESSAGES = [] # Messages to post
+FORCEQUIT = False # Quit if unknown error has occurred
 
 # Change cyrillic characters to latin to avoid detection in VK
 def Obfuscate(msg):
@@ -52,15 +53,19 @@ def SolveCaptcha(c):
     return c.try_again(key)
 
 def main():
+    global MESSAGES
+    global FORCEQUIT
     print("VK Commenter\n")
+    
     links = GetLinks("links.txt")
     login = input("Login: ")
     password = input("Password: ")
+    MESSAGES += [input("Comment: ")]
 
     # session = vk_api.VkApi(token=GetToken(login, password))
     # vk = session.get_api()
 
-    vk_session = vk_api.VkApi(login, password)
+    vk_session = vk_api.VkApi(login=login, password=password, app_id=6121396, captcha_handler=SolveCaptcha)
     vk_session.auth()
 
     vk = vk_session.get_api()
@@ -72,14 +77,14 @@ def main():
         try:
             status = vk.wall.createComment(owner_id=ids[0], post_id=ids[1], message=GetMessage())
         except Exception as e:
-            if "parent deleted" in str(e).lower(): print(f"[-][{link}]", e)
+            if "parent deleted" in str(e).lower(): print(f"[-] {e} ({link})")
             elif "captcha" in str(e).lower():
                 print("[!] Captcha needed")
                 exit()
             else:
-                print("[!] Unknown error:", e)
-                print(ids)
-                exit()
+                print(f"[!] Unknown error: {e} ({link})")
+                # print(ids)
+                if FORCEQUIT: exit()
         else:
             print("[+] Posted on", link)
 
