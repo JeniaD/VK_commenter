@@ -1,7 +1,7 @@
 # VK Commenter
 Скрипт для автоматизації коментування в соцмережі ВК.
 
-## Інсталяція
+## Встановлення
 Для використання завантажте скрипт
 ```
 git clone https://github.com/JeniaD/VK_commenter.git
@@ -30,17 +30,18 @@ https://vk.com/wall-12489321_10011
 python3 main.py
 ```
 
-Він вам запропонує ввести логін і пароль від акаунту, від якого скрипт буде залишати коментарі. Якщо посилань в `links.txt` багато, вам, можливо, знадобиться декілька разів пройти каптчу.
+Він вам запропонує ввести логін і пароль від акаунту, від якого скрипт буде залишати коментар, а також сам коментар. Якщо посилань в `links.txt` багато, вам, можливо, знадобиться декілька разів пройти каптчу.
 ```
 $ python3 main.py
 Login: +123456789
 Password: Password123
+Comment: Будущее своих детей и внуков продать за гречку…
 [?] Login successful
 [+] Posted on: https://vk.com/wall-...
 [+] Posted on: https://vk.com/wall-...
 [+] Posted on: https://vk.com/wall-...
-[!] Captcha exception: https://...
-Please enter the code: abc123
+[!] Captcha exception: https://vk.com/captcha.php?...
+[>] Please enter the code: abc123
 [+] Posted on: https://vk.com/wall-...
 [+] Posted on: https://vk.com/wall-...
 ```
