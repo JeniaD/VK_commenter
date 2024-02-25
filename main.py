@@ -3,6 +3,21 @@ import random
 
 MESSAGES = [] # Messages to post
 FORCEQUIT = False # Quit if unknown error has occurred
+LINKSFILE = "links.txt"
+LOGIN = ""
+PASSWORD = ""
+
+def LoadConfig():
+    global LOGIN, PASSWORD, LINKSFILE, MESSAGES
+    try:
+        import config
+        LOGIN = config.LOGIN
+        PASSWORD = config.PASSWORD
+        LINKSFILE = config.LINKSFILE
+        MESSAGES = config.MESSAGES
+    except:
+        return False
+    return True
 
 # Randomly change cyrillic characters to latin to avoid detection in VK
 def Obfuscate(msg):
@@ -38,10 +53,11 @@ def main():
     global FORCEQUIT
     print("VK Commenter\n")
 
-    links = GetLinks("links.txt")
-    login = input("Login: ")
-    password = input("Password: ")
-    MESSAGES += [input("Comment: ")]
+    if not LoadConfig():
+        links = GetLinks(LINKSFILE)
+        login = input("Login: ")
+        password = input("Password: ")
+        MESSAGES += [input("Comment: ")]
 
     vk_session = vk_api.VkApi(login=login, password=password, app_id=6121396, captcha_handler=SolveCaptcha)
     vk_session.auth()
