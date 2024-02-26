@@ -3,3 +3,4 @@ tests
 links.txt
 *.json
 __pycache__
+config.py
