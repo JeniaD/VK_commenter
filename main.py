@@ -51,15 +51,18 @@ def SolveCaptcha(c):
 def main():
     global MESSAGES
     global FORCEQUIT
+    global LOGIN
+    global PASSWORD
     print("VK Commenter\n")
 
     if not LoadConfig():
-        links = GetLinks(LINKSFILE)
-        login = input("Login: ")
-        password = input("Password: ")
+        LOGIN = input("Login: ")
+        PASSWORD = input("Password: ")
         MESSAGES += [input("Comment: ")]
+    
+    links = GetLinks(LINKSFILE)
 
-    vk_session = vk_api.VkApi(login=login, password=password, app_id=6121396, captcha_handler=SolveCaptcha)
+    vk_session = vk_api.VkApi(login=LOGIN, password=PASSWORD, app_id=6121396, captcha_handler=SolveCaptcha)
     vk_session.auth()
 
     vk = vk_session.get_api()
