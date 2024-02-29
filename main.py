@@ -1,21 +1,12 @@
 import vk_api
-from modules.commenter import PostComments
+import argparse
 
-LINKSFILE = "links.txt"
-LOGIN = ""
-PASSWORD = ""
+from modules.commenter import PostComments
+from modules.poster import PublishPosts
 
 def LoadConfig():
-    global LOGIN, PASSWORD, LINKSFILE, MESSAGES
-    try:
-        import config
-        LOGIN = config.LOGIN
-        PASSWORD = config.PASSWORD
-        LINKSFILE = config.LINKSFILE
-        MESSAGES = config.MESSAGES
-    except:
-        return False
-    return True
+    import config
+    return config.LOGIN, config.PASSWORD, config.LINKSFILE, config.MESSAGES
 
 # Get list of target links to post on
 def GetLinks(file):
@@ -29,15 +20,30 @@ def SolveCaptcha(c):
     return c.try_again(key)
 
 def main():
-    global MESSAGES
-    global LOGIN
-    global PASSWORD
+    parser = argparse.ArgumentParser(description="VK commenter script")
+    parser.add_argument("mode", choices=["comment", "post"], help="Attack mode")
+    parser.add_argument("--config", help="Python config file")
+    parser.add_argument("--login", help="User login")
+    parser.add_argument("--password", help="User password")
+    parser.add_argument("--message", help="Message to post")
+    parser.add_argument("--links", help="Target links file")
+    args = parser.parse_args()
+
     print("VK Commenter\n")
 
-    if not LoadConfig():
-        LOGIN = input("Login: ")
-        PASSWORD = input("Password: ")
-        MESSAGES += [input("Comment: ")]
+    if args.config: LOGIN, PASSWORD, LINKSFILE, MESSAGES = LoadConfig()
+    else:
+        if args.login: LOGIN = args.login
+        else: LOGIN = input("Login: ")
+
+        if args.password: PASSWORD = args.login
+        else: PASSWORD = input("Password: ")
+
+        if args.message: MESSAGES = [args.message]
+        else: MESSAGES = [input("Message: ")]
+
+        if args.links: LINKSFILE = args.links
+        else: LINKSFILE = input("Links file: ")
 
     vk_session = vk_api.VkApi(login=LOGIN, password=PASSWORD, app_id=6121396, captcha_handler=SolveCaptcha)
     vk_session.auth()
@@ -46,5 +52,8 @@ def main():
 
     print("[?] Login successful")
 
-    PostComments(vk, MESSAGES, GetLinks(LINKSFILE))
+    if args.mode == "comment":
+        PostComments(vk, MESSAGES, GetLinks(LINKSFILE))
+    elif args.mode == "post":
+        PublishPosts(vk, MESSAGES, GetLinks(LINKSFILE))
 if __name__ == "__main__": main()
