@@ -36,7 +36,7 @@ def main():
         if args.login: LOGIN = args.login
         else: LOGIN = input("Login: ")
 
-        if args.password: PASSWORD = args.login
+        if args.password: PASSWORD = args.password
         else: PASSWORD = input("Password: ")
 
         if args.message: MESSAGES = [args.message]
