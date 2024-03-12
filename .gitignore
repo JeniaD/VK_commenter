@@ -1,6 +1,7 @@
 *code-workspace
 tests
 links.txt
+links2.txt
 *.json
 __pycache__
 config.py
