@@ -18,30 +18,40 @@ pip3 install -r requirements.txt
 ```
 
 ## Використання
-Для використання скрипту створіть в одній папці зі скриптом файл `links.txt`. Впишіть в цей файл посилання на пости, де потрібно залишити коментар, в такому вигляді:
+
+```
+main.py {comment,post} [-h] [--config CONFIG] [--login LOGIN] [--password PASSWORD] [--message MESSAGE] [--links LINKS]
+
+обов'язкові аргументи:
+  {comment,post}       Режим атаки
+
+додаткові аргументи:
+  -h, --help           показати довідку
+  --config CONFIG      використати конфіг з файлу
+  --login LOGIN        логін користувача
+  --password PASSWORD  пароль користувача
+  --message MESSAGE    повідомлення
+  --links LINKS        посилання на цілі
+```
+
+Приклад файлу посилань на цілі для режиму коментування:
 ```
 https://vk.com/wall-12345678_4321
 https://vk.com/wall-24813579_1234
 https://vk.com/wall-12489321_10011
 ```
 
-Далі запустіть скрипт.
+Приклад файлу посилань на цілі для режиму постів:
 ```
-python3 main.py
+https://vk.com/wall-184702158
+https://vk.com/wall-95241089
+https://vk.com/wall-74359616
 ```
 
-Він вам запропонує ввести логін і пароль від акаунту, від якого скрипт буде залишати коментар, а також сам коментар. Якщо посилань в `links.txt` багато, вам, можливо, знадобиться декілька разів пройти каптчу.
+Приклад файлу конфігу:
 ```
-$ python3 main.py
-Login: +123456789
-Password: Password123
-Comment: Будущее своих детей и внуков продать за гречку…
-[?] Login successful
-[+] Posted on: https://vk.com/wall-...
-[+] Posted on: https://vk.com/wall-...
-[+] Posted on: https://vk.com/wall-...
-[!] Captcha exception: https://vk.com/captcha.php?...
-[>] Please enter the code: abc123
-[+] Posted on: https://vk.com/wall-...
-[+] Posted on: https://vk.com/wall-...
+LOGIN = "+123456789"
+PASSWORD = "Password123"
+LINKSFILE = "links.txt"
+MESSAGES = ["Будущее своих детей и внуков продать за гречку…"]
 ```
