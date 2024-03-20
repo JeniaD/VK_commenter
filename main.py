@@ -1,12 +1,18 @@
 import vk_api
 import argparse
+import importlib.util
 
 from modules.commenter import PostComments
 from modules.poster import PublishPosts
 
-def LoadConfig():
-    import config
-    return config.LOGIN, config.PASSWORD, config.LINKSFILE, config.MESSAGES
+def ImportFromFile(filename, variableName):
+    spec = importlib.util.spec_from_file_location(filename[:-3], filename)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return getattr(module, variableName, None)
+
+def LoadConfig(filename):
+    return ImportFromFile(filename, "LOGIN"), ImportFromFile(filename, "PASSWORD"), ImportFromFile(filename, "LINKSFILE"), ImportFromFile(filename, "MESSAGES")
 
 # Get list of target links to post on
 def GetLinks(file):
@@ -31,7 +37,7 @@ def main():
 
     print("VK Commenter\n")
 
-    if args.config: LOGIN, PASSWORD, LINKSFILE, MESSAGES = LoadConfig()
+    if args.config: LOGIN, PASSWORD, LINKSFILE, MESSAGES = LoadConfig(args.config)
     else:
         if args.login: LOGIN = args.login
         else: LOGIN = input("Login: ")
