@@ -20,7 +20,7 @@ pip3 install -r requirements.txt
 ## Використання
 
 ```
-main.py {comment,post} [-h] [--config CONFIG] [--login LOGIN] [--password PASSWORD] [--message MESSAGE] [--links LINKS]
+python3 main.py {comment,post} [-h] [--config CONFIG] [--login LOGIN] [--password PASSWORD] [--message MESSAGE] [--links LINKS]
 
 обов'язкові аргументи:
   {comment,post}       Режим атаки
